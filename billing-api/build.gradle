@@ -1,0 +1,19 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+
+bootJar {
+    mainClassName = "com.urban.billingapi.BillingApiApplication"
+}
+
+dependencies {
+    runtime group: 'com.h2database', name: 'h2', version: '1.4.197'
+    implementation project(":billing-core")
+}

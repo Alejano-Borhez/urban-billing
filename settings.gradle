@@ -1,0 +1,3 @@
+rootProject.name = 'urban-billing'
+include 'billing-api',
+		'billing-core'
