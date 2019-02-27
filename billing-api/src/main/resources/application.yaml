@@ -1,3 +1,4 @@
+
 spring:
   jpa:
     hibernate:
@@ -19,3 +20,5 @@ spring:
       maximum-pool-size: 100
       idle-timeout: 30000
     initialization-mode: always
+server:
+  port: 8081

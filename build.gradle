@@ -20,7 +20,7 @@ allprojects {
 
 	group = 'com.urban'
 	version = '0.0.1-SNAPSHOT'
-	sourceCompatibility = '1.8'
+	sourceCompatibility = 1.8
 
 	repositories {
 		mavenCentral()
@@ -30,9 +30,16 @@ allprojects {
 		// lombok
 		compileOnly "org.projectlombok:lombok:${lombok_version}"
 		testCompileOnly "org.projectlombok:lombok:${lombok_version}"
-		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 		implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	}
+
+	bootJar {
+		mainClassName = ''
+	}
+
+	jar{
+		enabled = true
 	}
 }
 
