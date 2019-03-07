@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import javax.transaction.Transactional;
+
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import com.urban.billingapi.model.enums.TransportType;
@@ -13,6 +15,7 @@ import io.swagger.annotations.Api;
 
 @RepositoryRestResource(path = "users")
 @Api(tags = "Transport Entity")
+@Transactional
 public interface ITransportRepository extends IBillingRepository<Transport, Long> {
     List<Transport> findAllByNameIn(Collection<TransportType> name);
 }

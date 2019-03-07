@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.braintreegateway.BraintreeGateway;
 import com.braintreegateway.Environment;
+import com.github.javafaker.Faker;
 
 import springfox.documentation.spring.data.rest.configuration.SpringDataRestConfiguration;
 
@@ -30,6 +31,11 @@ public class BillingApiApplication {
 				"hwp4z8mxypt8qzmf",
 				"42f9e99b1baa410865f276d49575379a"
 		);
+	}
+
+	@Bean
+	public Faker faker() {
+		return new Faker();
 	}
 }
 

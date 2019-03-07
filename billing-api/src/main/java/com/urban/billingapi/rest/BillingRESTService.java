@@ -1,14 +1,7 @@
 package com.urban.billingapi.rest;
 
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.rest.webmvc.support.RepositoryEntityLinks;
-import org.springframework.hateoas.Resource;
-import org.springframework.util.ReflectionUtils;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,22 +11,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.urban.billingapi.BillingPageRequest;
 import com.urban.billingapi.dao.IBillingRepository;
+import com.urban.billingapi.model.EntityExample;
 
-public interface BillingRESTService<T, ID> {
+public interface BillingRESTService<T extends EntityExample<T>, ID> {
     IBillingRepository<T, ID> getRepository();
 
-    RepositoryEntityLinks getRepositoryEntityLinks();
-
-    Class<T> getEntityClass();
-
     @GetMapping(path = "all")
-    default Resource<Page<T>> findAll(Pageable pageable) {
-        return new Resource<>(getRepository().findAll(pageable), getRepositoryEntityLinks().linksToSearchResources(getEntityClass()));
+    default Page<T> findAll(@RequestParam int page, int size) {
+        return getRepository().findAll(PageRequest.of(page, size));
     }
 
     @PostMapping(path = "find")
-    default Resource<Page<T>> find(@RequestBody BillingPageRequest<T> pageRequest) {
-        return new Resource<>(getRepository().findAll(Example.of(pageRequest.getEntityExample()), pageRequest.pageRequest()), getRepositoryEntityLinks().linksToSearchResources(getEntityClass()));
+    default Page<T> find(@RequestBody BillingPageRequest<T> pageRequest) {
+        return getRepository().findAll(pageRequest.getExample(), pageRequest.getPageRequest());
     }
 
     @PostMapping(path = "create")

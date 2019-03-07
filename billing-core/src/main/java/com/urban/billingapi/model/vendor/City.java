@@ -6,11 +6,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.urban.billingapi.model.EntityExample;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
-public class City {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class City implements EntityExample<City> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

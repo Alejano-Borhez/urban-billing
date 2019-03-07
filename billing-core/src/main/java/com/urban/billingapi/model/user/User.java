@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import com.urban.billingapi.model.EntityExample;
 import com.urban.billingapi.model.PaymentSource;
 
 import io.swagger.annotations.ApiModel;
@@ -33,7 +34,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel
-public class User {
+public class User implements EntityExample<User> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")

@@ -14,21 +14,32 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedNativeQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.urban.billingapi.model.EntityExample;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Builder
 @Data
-public class Vendor {
+@NoArgsConstructor
+@AllArgsConstructor
+public class Vendor implements EntityExample<Vendor> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String name;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "vendor_transport",
             joinColumns = {@JoinColumn(name = "vendor_id")},
             inverseJoinColumns = {@JoinColumn(name = "transport_id")})
     private Set<Transport> supportedTransports = new HashSet<>();
+    @OneToOne(fetch = FetchType.EAGER)
+    private City city;
 }

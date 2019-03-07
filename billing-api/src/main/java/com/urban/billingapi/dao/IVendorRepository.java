@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.NamedNativeQuery;
+import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +20,7 @@ import io.swagger.annotations.Api;
 
 @RepositoryRestResource(path = "vendors")
 @Api(tags = "Vendor Entity")
+@Transactional
 public interface IVendorRepository extends IBillingRepository<Vendor, Long> {
 
     Page<Vendor> findDistinctBySupportedTransports_NameIn(Collection<TransportType> names, Pageable pageable);
