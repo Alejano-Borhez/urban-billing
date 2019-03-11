@@ -13,7 +13,7 @@ import com.urban.billingapi.BillingPageRequest;
 import com.urban.billingapi.dao.IBillingRepository;
 import com.urban.billingapi.model.EntityExample;
 
-public interface BillingRESTService<T extends EntityExample<T>, ID> {
+public interface BillingRESTService<T extends EntityExample<T, ID>, ID> {
     IBillingRepository<T, ID> getRepository();
 
     @GetMapping(path = "all")
@@ -22,7 +22,7 @@ public interface BillingRESTService<T extends EntityExample<T>, ID> {
     }
 
     @PostMapping(path = "find")
-    default Page<T> find(@RequestBody BillingPageRequest<T> pageRequest) {
+    default Page<T> find(@RequestBody BillingPageRequest<T, ID> pageRequest) {
         return getRepository().findAll(pageRequest.getExample(), pageRequest.getPageRequest());
     }
 

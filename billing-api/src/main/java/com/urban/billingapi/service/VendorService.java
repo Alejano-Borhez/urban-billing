@@ -1,61 +1,32 @@
 package com.urban.billingapi.service;
 
-import static com.urban.utils.StreamUtils.collectToSet;
-import static com.urban.utils.StreamUtils.map;
-import static com.urban.utils.StreamUtils.size;
-
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.urban.billingapi.dao.ITransportRepository;
 import com.urban.billingapi.dao.IVendorRepository;
-import com.urban.billingapi.model.enums.TransportType;
-import com.urban.billingapi.model.vendor.Transport;
+import com.urban.billingapi.model.exceptions.UrbanServiceException;
 import com.urban.billingapi.model.vendor.Vendor;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(propagation = Propagation.REQUIRED)
-public class VendorService {
-    private final IVendorRepository vendorRepository;
-    private final ITransportRepository transportRepository;
+public class VendorService implements IBillingService<Vendor, Long> {
+    @Getter
+    private final IVendorRepository repository;
 
-    public Vendor createVendor(Vendor vendor) {
-        Set<Transport> supportedTransports = vendor.getSupportedTransports();
-        if (size(supportedTransports) > 0) {
-            List<Transport> allByName = transportRepository.findAllByNameIn(map(supportedTransports, Transport::getName));
-            vendor.setSupportedTransports(collectToSet(allByName));
+    @Override
+    public void validate(Vendor vendor, boolean isNew) {
+        IBillingService.super.validate(vendor, isNew);
+        if (isNew) {
+            if (StringUtils.isBlank(vendor.getName())) throw new UrbanServiceException("Vendor name is null");
+            if (vendor.getCity() == null) throw new UrbanServiceException("City for new Vendor is null");
+            if (vendor.getCurrency() == null) throw new UrbanServiceException("Currency for new Vendor is null");
         }
-
-        return vendorRepository.save(vendor);
     }
 
-    public Vendor addSupportedTransport(Long vendorId, Transport transport) {
-        Optional<Vendor> vendor = vendorRepository.findById(vendorId);
-
-        if (!vendor.isPresent()) {
-            return null;
-        }
-
-        Vendor foundVendor = vendor.get();
-
-        foundVendor.getSupportedTransports().add(transport);
-
-        return vendorRepository.save(foundVendor);
-    }
-
-    public Page<Vendor> findByTransportTypes(Collection<TransportType> transportTypes, PageRequest pageRequest) {
-        return vendorRepository.findDistinctBySupportedTransports_NameIn(transportTypes, pageRequest);
-    }
 }

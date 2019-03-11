@@ -13,14 +13,14 @@ import com.urban.billingapi.model.EntityExample;
 import lombok.Data;
 
 @Data
-public class BillingPageRequest<T extends EntityExample<T>> {
-    int page;
-    int size;
-    List<ResultOrder> orders;
-    T entityExample;
+public class BillingPageRequest<T extends EntityExample<T, ID>, ID> {
+    private int page;
+    private int size;
+    private List<ResultOrder> orders;
+    private T entityExample;
 
     public PageRequest getPageRequest() {
-        Sort sort = Sort.by(map(orders, order -> new Sort.Order(order.direction, order.property)));
+        Sort sort = Sort.by(map(orders, order -> new Sort.Order(order.getDirection(), order.getProperty())));
         return PageRequest.of(page, size, sort);
     }
 
@@ -28,8 +28,9 @@ public class BillingPageRequest<T extends EntityExample<T>> {
         return entityExample.createExample(entityExample);
     }
 
+    @Data
     public static class ResultOrder {
-        public Sort.Direction direction;
-        public String property;
+        private Sort.Direction direction;
+        private String property;
     }
 }

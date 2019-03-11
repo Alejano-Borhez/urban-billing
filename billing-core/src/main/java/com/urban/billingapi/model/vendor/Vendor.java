@@ -1,21 +1,14 @@
 package com.urban.billingapi.model.vendor;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Currency;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.ManyToOne;
 
 import com.urban.billingapi.model.EntityExample;
 
@@ -29,17 +22,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vendor implements EntityExample<Vendor> {
+public class Vendor implements EntityExample<Vendor, Long> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(unique = true)
     private String name;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "vendor_transport",
-            joinColumns = {@JoinColumn(name = "vendor_id")},
-            inverseJoinColumns = {@JoinColumn(name = "transport_id")})
-    private Set<Transport> supportedTransports = new HashSet<>();
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private City city;
+    private Currency currency;
 }

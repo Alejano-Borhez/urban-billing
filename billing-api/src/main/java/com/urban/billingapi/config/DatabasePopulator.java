@@ -1,12 +1,15 @@
 package com.urban.billingapi.config;
 
 import static com.urban.utils.StreamUtils.safeStream;
+import static java.math.BigDecimal.valueOf;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.generate;
 
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
+import java.util.Currency;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -20,7 +23,6 @@ import com.urban.billingapi.dao.ICityRepository;
 import com.urban.billingapi.dao.ITicketRepository;
 import com.urban.billingapi.dao.ITransportRepository;
 import com.urban.billingapi.dao.IUserRepository;
-import com.urban.billingapi.dao.IVendorRepository;
 import com.urban.billingapi.model.enums.TicketType;
 import com.urban.billingapi.model.enums.TransportType;
 import com.urban.billingapi.model.user.User;
@@ -28,6 +30,7 @@ import com.urban.billingapi.model.vendor.City;
 import com.urban.billingapi.model.vendor.Ticket;
 import com.urban.billingapi.model.vendor.Transport;
 import com.urban.billingapi.model.vendor.Vendor;
+import com.urban.billingapi.service.VendorService;
 import com.urban.utils.StreamUtils;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +41,7 @@ public class DatabasePopulator implements InitializingBean {
     private final Random random = new Random();
     private final ICityRepository cityRepository;
     private final ITransportRepository transportRepository;
-    private final IVendorRepository vendorRepository;
+    private final VendorService vendorService;
     private final ITicketRepository ticketRepository;
     private final IUserRepository userRepository;
     private final Faker faker;
@@ -56,12 +59,12 @@ public class DatabasePopulator implements InitializingBean {
                 .collect(toList());
 
         List<Vendor> vendors = safeStream(cities)
-                .map(city -> generate(() -> randomVendor(transports, city)).limit(3L).collect(toList()))
+                .map(city -> generate(() -> randomVendor(city)).limit(3L).collect(toList()))
                 .flatMap(StreamUtils::safeStream)
                 .collect(toList());
 
         List<Ticket> tickets = safeStream(vendors)
-                .map(vendor -> generate(() -> randomTicket(vendor)).limit(10L).collect(toList()))
+                .map(vendor -> generate(() -> randomTicket(vendor, transports)).limit(10L).collect(toList()))
                 .flatMap(StreamUtils::safeStream)
                 .collect(toList());
 
@@ -71,13 +74,15 @@ public class DatabasePopulator implements InitializingBean {
                 .collect(toList());
     }
 
-    private Ticket randomTicket(Vendor vendor) {
+    private Ticket randomTicket(Vendor vendor, List<Transport> transports) {
         Ticket ticket = ticketRepository.save(Ticket.builder()
                 .duration(Duration.of((long) random.nextInt(101), ChronoUnit.SECONDS))
                 .ticketType(pickRandom(TicketType.values()))
+                .currency(Currency.getInstance("PLN"))
+                .price(valueOf(random.nextInt(20)).divide(valueOf(10), 2, RoundingMode.UP))
                 .build());
         ticket.setVendor(vendor);
-        ticket.setTransports(prepareRandomSet(vendor.getSupportedTransports()));
+        ticket.setTransports(prepareRandomSet(transports));
 
         return ticketRepository.save(ticket);
     }
@@ -90,14 +95,12 @@ public class DatabasePopulator implements InitializingBean {
                 .orElse(null);
     }
 
-    private Vendor randomVendor(List<Transport> transports, City city) {
-        Vendor vendor = vendorRepository.save(Vendor.builder()
+    private Vendor randomVendor(City city) {
+        return vendorService.createNew(Vendor.builder()
                 .name(faker.company().name() + "_" + city.getName())
+                .city(city)
+                .currency(Currency.getInstance("PLN"))
                 .build());
-        vendor.setCity(city);
-        vendor.setSupportedTransports(prepareRandomSet(transports));
-        vendor = vendorRepository.save(vendor);
-        return vendor;
     }
 
     private User randomUser() {
