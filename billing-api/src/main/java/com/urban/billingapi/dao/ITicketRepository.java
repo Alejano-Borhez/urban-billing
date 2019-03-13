@@ -1,5 +1,6 @@
 package com.urban.billingapi.dao;
 
+import java.time.Duration;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -15,9 +16,14 @@ import com.urban.billingapi.model.vendor.Ticket;
 
 import io.swagger.annotations.Api;
 
-@RepositoryRestResource(path = "tickets")
-@Api(tags = "Ticket Entity")
+@RepositoryRestResource( path = "tickets" )
+@Api( tags = "Ticket Entity" )
 @Transactional
-public interface ITicketRepository extends IBillingRepository<Ticket, Long>{
-    Page<Ticket> findDistinctByTransports_NameInAndVendor_City_Name(List<TransportType> names, String city, Pageable pageable);
+public interface ITicketRepository extends IBillingRepository<Ticket, Long>
+{
+    Page<Ticket> findDistinctByTransports_NameInAndVendor_City_NameAndDurationGreaterThan(
+        List<TransportType> names,
+        String city,
+        Duration duration,
+        Pageable pageable );
 }
