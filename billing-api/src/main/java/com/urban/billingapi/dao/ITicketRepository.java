@@ -18,6 +18,6 @@ import io.swagger.annotations.Api;
 @RepositoryRestResource(path = "tickets")
 @Api(tags = "Ticket Entity")
 @Transactional
-public interface ITicketRepository extends IBillingRepository<Ticket, Long> {
+public interface ITicketRepository extends IBillingRepository<Ticket, Long>{
     Page<Ticket> findDistinctByTransports_NameInAndVendor_City_Name(List<TransportType> names, String city, Pageable pageable);
 }

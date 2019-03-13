@@ -8,8 +8,12 @@ import com.urban.billingapi.model.vendor.City;
 
 import io.swagger.annotations.Api;
 
-@RepositoryRestResource(path = "cities")
-@Api(tags = "City Entity")
+import java.util.Optional;
+
+@RepositoryRestResource( path = "cities" )
+@Api( tags = "City Entity" )
 @Transactional
-public interface ICityRepository extends IBillingRepository<City, Long> {
+public interface ICityRepository extends IBillingRepository<City, Long>
+{
+   public Optional<City> findByName( String name );
 }
