@@ -1,19 +1,6 @@
 
 spring:
   jpa:
-    properties:
-      hibernate:
-        show_sql: true
-        format_sql: true
-        type: trace
-        generate_statistics: true
-        use_sql_comments: true
-        SQL: DEBUG
-        hql:
-        tool:
-          hbm2ddl: warm
-        cache: info
-        jdbc: debug
     hibernate:
       naming:
         physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy

@@ -24,4 +24,8 @@ dependencies {
     implementation "com.github.javafaker:javafaker:${java_faker_version}"
 
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.0.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    compile group: 'org.springframework.security.oauth.boot', name: 'spring-security-oauth2-autoconfigure', version: '2.1.2.RELEASE'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
