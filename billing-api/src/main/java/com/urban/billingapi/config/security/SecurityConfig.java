@@ -111,7 +111,7 @@ public class SecurityConfig
         {
             http
                 .authorizeRequests()
-                .antMatchers( "/api**" )
+                .antMatchers( "/api/**" )
                 .authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS );
