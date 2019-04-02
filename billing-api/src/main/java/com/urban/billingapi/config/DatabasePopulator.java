@@ -1,7 +1,9 @@
 package com.urban.billingapi.config;
 
+import static com.urban.utils.StreamUtils.safeAsList;
 import static com.urban.utils.StreamUtils.safeStream;
 import static java.math.BigDecimal.valueOf;
+import static java.time.temporal.ChronoUnit.MINUTES;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Stream.generate;
 
@@ -45,6 +47,12 @@ public class DatabasePopulator implements InitializingBean {
     private final ITicketRepository ticketRepository;
     private final IUserRepository userRepository;
     private final Faker faker;
+    private static final List<Duration> DURATIONS = safeAsList(Duration.of(15, MINUTES),
+            Duration.of(30, MINUTES),
+            Duration.of(45, MINUTES),
+            Duration.of(60, MINUTES),
+            Duration.of(90, MINUTES),
+            Duration.of(120, MINUTES));
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -76,7 +84,7 @@ public class DatabasePopulator implements InitializingBean {
 
     private Ticket randomTicket(Vendor vendor, List<Transport> transports) {
         Ticket ticket = ticketRepository.save(Ticket.builder()
-                .duration(Duration.of((long) random.nextInt(101), ChronoUnit.SECONDS))
+                .duration(DURATIONS.get(random.nextInt(DURATIONS.size())))
                 .ticketType(pickRandom(TicketType.values()))
                 .currency(Currency.getInstance("PLN"))
                 .price(valueOf(random.nextInt(20)).divide(valueOf(10), 2, RoundingMode.UP))
