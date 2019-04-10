@@ -1,13 +1,7 @@
-package com.urban.billingapi.rest.v1;
+package com.urban.billingapi.rest;
 
-import com.urban.billingapi.dao.ICityRepository;
-import com.urban.billingapi.dao.ITransportRepository;
 import com.urban.billingapi.model.vendor.City;
-import com.urban.billingapi.model.vendor.Transport;
-import com.urban.billingapi.rest.BillingRESTService;
-import com.urban.billingapi.service.v1.CityServiceImpl;
-import com.urban.billingapi.service.v1.CrudService;
-import com.urban.billingapi.service.v1.mapper.CityVOMapper;
+import com.urban.billingapi.service.CityServiceImpl;
 import com.urban.billingapi.vo.CityVO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

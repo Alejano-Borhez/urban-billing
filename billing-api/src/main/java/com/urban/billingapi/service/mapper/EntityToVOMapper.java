@@ -1,11 +1,13 @@
-package com.urban.billingapi.service.v1.mapper;
+package com.urban.billingapi.service.mapper;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public interface EntityToVOMapper<E, V>
+import com.urban.billingapi.model.EntityExample;
+
+public interface EntityToVOMapper<ID, E extends EntityExample<E, ID>, V>
 {
     V toVO( E entity );
 

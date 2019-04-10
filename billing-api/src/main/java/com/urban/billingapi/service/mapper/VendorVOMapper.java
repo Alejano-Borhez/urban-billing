@@ -1,4 +1,4 @@
-package com.urban.billingapi.service.v1.mapper;
+package com.urban.billingapi.service.mapper;
 
 import com.urban.billingapi.dao.ICityRepository;
 import com.urban.billingapi.model.exceptions.UrbanServiceException;
@@ -10,7 +10,7 @@ import org.modelmapper.PropertyMap;
 import org.springframework.stereotype.Component;
 
 @Component
-public class VendorVOMapper implements EntityToVOMapper<Vendor, VendorVO>
+public class VendorVOMapper implements EntityToVOMapper<Long, Vendor, VendorVO>
 {
 
     private final ICityRepository cityRepository;

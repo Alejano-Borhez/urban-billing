@@ -1,4 +1,4 @@
-package com.urban.billingapi.service.v1.mapper;
+package com.urban.billingapi.service.mapper;
 
 import com.urban.billingapi.model.vendor.City;
 import com.urban.billingapi.vo.CityVO;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class CityVOMapper implements EntityToVOMapper<City, CityVO>
+public class CityVOMapper implements EntityToVOMapper<Long, City, CityVO>
 
 {
     private final ModelMapper modelMapper = new ModelMapper();

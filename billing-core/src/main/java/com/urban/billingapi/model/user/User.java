@@ -1,18 +1,14 @@
 package com.urban.billingapi.model.user;
 
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.urban.billingapi.model.EntityExample;
-import com.urban.billingapi.model.PaymentSource;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
@@ -46,7 +42,4 @@ public class User implements EntityExample<User, Long> {
     private String email;
     @Column(name = "user_token", columnDefinition = "VARCHAR(256)")
     private String userToken;
-
-    @OneToMany(mappedBy = "user")
-    private Set<PaymentSource> paymentSources;
 }

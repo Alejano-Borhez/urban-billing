@@ -1,9 +1,9 @@
-package com.urban.billingapi.service.v1;
+package com.urban.billingapi.service;
 
 import com.urban.billingapi.dao.ITicketRepository;
 import com.urban.billingapi.model.enums.TransportType;
 import com.urban.billingapi.model.vendor.Ticket;
-import com.urban.billingapi.service.v1.mapper.TicketVOMapper;
+import com.urban.billingapi.service.mapper.TicketVOMapper;
 import com.urban.billingapi.vo.TicketVO;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

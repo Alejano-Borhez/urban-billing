@@ -1,8 +1,8 @@
-package com.urban.billingapi.rest.v1;
+package com.urban.billingapi.rest;
 
 import com.urban.billingapi.model.enums.TransportType;
 import com.urban.billingapi.model.vendor.Ticket;
-import com.urban.billingapi.service.v1.TicketServiceImpl;
+import com.urban.billingapi.service.TicketServiceImpl;
 import com.urban.billingapi.vo.TicketVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

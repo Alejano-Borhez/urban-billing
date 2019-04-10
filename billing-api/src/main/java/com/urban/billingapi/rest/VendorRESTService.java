@@ -1,6 +1,6 @@
-package com.urban.billingapi.rest.v1;
+package com.urban.billingapi.rest;
 
-import com.urban.billingapi.service.v1.VendorServiceImpl;
+import com.urban.billingapi.service.VendorServiceImpl;
 import com.urban.billingapi.vo.VendorVO;
 import org.springframework.web.bind.annotation.*;
 import com.urban.billingapi.model.vendor.Vendor;
